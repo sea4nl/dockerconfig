@@ -1,0 +1,22 @@
+defaultEntryPoints = ["http", "https"]
+
+[web]
+address = ":8080"
+    [web.auth.basic]
+    users = ["admin:$apr1$rikw6Mmv$TJFuWdbHPAM1MoWJMMqH3."]
+
+[entryPoints]
+    [entryPoints.http]
+    address = ":80"
+        [entryPoints.http.redirect]
+            entryPoint = "https"
+    [entryPoints.https]
+    address = ":443"
+        [entryPoints.https.tls]
+[acme]
+# caServer = "https://acme-staging.api.letsencrypt.org/directory"
+email = "stef@broenink.nl"
+storage = "acme.json" # or "traefik/acme/account" if using KV store
+entryPoint = "https"
+onDemand = false
+OnHostRule = true
