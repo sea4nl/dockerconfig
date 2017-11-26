@@ -1,0 +1,30 @@
+version "3"
+
+networks:
+  proxy:
+    external: true
+  internal:
+    external: true
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: example
+    networks:
+      - internal
+    labels:
+      - traefik.enable=false
+
+  adminer:
+    image: adminer:4.3.1-standalone
+    labels:
+      - traefik.backend=adminer
+      - traefik.frontend.rule=Host:db.s-apps.nl
+      - traefik.docker.network=proxy
+      - traefik.port=8080
+    networks:
+      - internal
+      - proxy
+    depends_on:
+      - postgres
